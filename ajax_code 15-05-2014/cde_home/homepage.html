@@ -1,0 +1,221 @@
+			<html>
+				<head>
+					<meta http-equiv="X-UA-Compatible" content="IE=9">
+					<title>Persistent CDE</title>
+					<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+					<script type="text/javascript" src="script/jquery.js"></script>
+					<script type="text/javascript" src="script/jquery-ui-1.10.4.custom.js"></script>
+					<link rel="stylesheet" type="text/css" href="css/style.css" />      
+					<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.4.custom.css" />
+					<link rel="stylesheet" type="text/css" href="css/avgrund.css" />           
+					<script type="text/javascript" src="script/jquery.avgrund.js"></script>
+					<script type="text/javascript" src="script/bootstrap.js"></script>        
+					<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+					<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+					<script type="text/javascript" src="script/base_homepage.js"></script>
+					<script type="text/javascript" src="script/filtering_products.js"></script>
+					<script type="text/javascript" src="script/post_calls.js"></script>
+					<script type="text/javascript" src="script/template.js"></script>
+					<link rel="stylesheet" type="text/css" href="css/template.css" />  
+					<link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css" />  
+					<script type="text/javascript" src="script/jquery.bxslider.js"></script>	
+					<script type="text/javascript" src="script/jquery.dd.min.js"></script>	
+					<script type="text/javascript" src="script/jquery.dd.js"></script>	
+					<link rel="stylesheet" type="text/css" href="css/dd.css" /> 
+				</head>
+
+			<body>
+
+				<div class="page">
+					<div id="header">
+						<h1><span>Persistent:</span>Continuous Delivery Environment (CDE)</h1>
+						<span class="tagline">Partners in Innovation</span>
+						</span>
+						<div class="subheader">
+							<a href="#">Software Applications</a>
+							<a href="#"></a>
+						</div>
+					</div>
+					<div id="page-content">
+						<div id="page-content-inner">
+							<div class="sidebar-before"></div>
+								<div id="sidebar-list" class="sidebar" style="width:16%;">
+									<ul id="sidebar_list" class="paging2">
+										<li onclick="display_status_report();"><span>Status Report</span></li>
+									</ul>
+								</div>
+								<div id="wrapper">
+								<!--<div id="toggle-button" class="close-panel"></div>-->
+								<div id="softwaresPage">
+								<div class="page-header">
+									<span class="space">Continuous Delivery Environment</span><span>|</span><span class="sub-text">Software List for installation.</span>
+								</div>
+								<div id="product_filter">
+								</div>
+			<!--********************************************************************** -->
+			<!--********************************************************************** -->
+			<!--*********************     popup for details ************************** -->
+
+
+								<div class="modal fade" id="popup-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+								<form id="popup-form">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+												<h4 class="modal-title" id="myModalLabel">
+													Configuration Details
+												</h4>
+											</div>
+									<div class="modal-body">
+										<div class="tabbable" id="tabs-857719">
+											<ul class="nav nav-pills nav-justified">
+												<li id="details_li" class="active">
+													<a href="#details" id="details_d" data-toggle="tab">Details</a>
+												</li>
+												<li id="available_li">
+													<a href="#available" id="available_a" data-toggle="tab">Available</a>
+												</li>
+												<li id="cloud_li">
+													<a href="#cloud" id="cloud_a" data-toggle="tab">Cloud</a>
+												</li>					
+											</ul>
+									<div class="tab-content">
+										<div class="tab-pane active" id="details">
+											<p>
+												<div>
+												<div width="80%" style="max-width: 208%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-ms-text-overflow:ellipsis;float:left;margin-right:61px;margin-top:60px">
+												<img id="pop-image" src="./images.jpg"/>
+												</div>
+
+
+												<div float="right" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;-ms-text-overflow:ellipsis;">
+													<ul>
+														<li><label id="label-productname" >PRODUCT :MYSQL</label></li><br>
+														<li><label id="label-version">Version :  2.40<label></li><br>
+														<li><label id="label-architecture">Architecture :  x86_64</label></li><br/>
+														<li><label id="label-operatingsystem">Operating System :  linux</label></li>
+													</ul>
+												</div>
+													<div class="btn-group" style=" float: right; margin-top: 3%; margin-right: 18%; ">
+														<select  id="installation_mode" style="width:250px;" class="tech">
+															<option value="0" data-description="Select a Mode"></option>
+															<option value="existingvm" data-image="images/machine_small.png">Install on Existing Machine</option>
+															<option value="openstack" data-image="images/openstack_small_logo.png">Provision VM on openstack</option>
+															<option value="awsvm" data-image="images/aws_small_logo.png">Provision VM on AWS</option>
+															<option value="vmonothers" data-image="images/aws_small_logo.png">Provision VM on other service</option>
+														</select>
+													</div>				
+												</div>
+											</p>
+											<br/><br/>
+											<div class="modal-footer" style=" position: relative; margin-top: 19%; ">
+			<button type="button" id="selectednext" class="btn btn-primary"> Next </button> <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button> 
+											</div>						
+										</div>
+										<div class="tab-pane" id="available">
+											<br>										
+				<h3 style="margin-left: 27%"><img src="images/machine_large.png" width="80" height="80"/><span style=" width: 200px; " class="label label-info">Install on Existing Machine</span></h3><br><br>
+				<div class="form-group"><label>IP address</label><input name="available_ipaddress" id="available_ipaddress" type="text" class="form-control" placeholder="Enter Machine IP" >
+												</div>
+												<br>
+			<div class="form-group"><label>Username</label><input type="text" name="available_username" id="available_username" class="form-control" placeholder="Enter Username" >
+												</div>
+												<br>
+												<div class="form-group">
+													<label>Password</label>
+			<input type="password" class="form-control" name="available_password" id="available_password" placeholder="Enter Password" >
+												</div>
+			 <div style=" position: absolute; margin-top: -29%; margin-left: 356; float: right; ">
+					  <h5 id="loader_heading" style="position: relative; margin-left: 35;"></h5>
+					  <img id="loader" src="./images/loader.gif" style="visibility:hidden;position: absolute; margin-top: 25; margin-left: 52;"/>
+					  <img id="loader1" src="./images/loader1.png" style="visibility:hidden;position: absolute; margin-top: 25; margin-left: 90;"/>
+					   <img id="invalid_img" src="./images/logos/invalid.jpg" style="visibility:hidden;position: absolute;
+			margin-top: 30px; margin-left: 75px;"/>
+
+
+			 </div>
+												<br><br>
+			<div><progress min=0 max=100 value=0 id="progressBar"></progress><span class="progress-value"></span></div>											
+			<div class="modal-footer">
+			<button type="button" class="btn btn-primary" name="available_back" id="available_back" >Back</button><button type="button" class="btn btn-primary" name="available_button" id="availablemachine_button" onclick="submit_details();">Install</button> <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button> 
+			</div>
+								
+										</div>
+										<div class="tab-pane" id="cloud">
+											<div id="non_openstack_frm">
+				<br>
+
+
+
+			<h3 style="margin-left: 27%"><img class="non_openstack_logo" src="images/aws_large_logo.png"  width="80" height="80"/><span style=" width: 280px; " class="label label-info">Login for AWS</span></h3><br><br>
+
+				<div class="form-group"><label>Access ID</label><input name="aws_accessid" type="text" class="form-control" id="aws_accessid" placeholder="Enter Access ID">
+													</div>
+													<br>
+													<div class="form-group">
+								<label>Secret key</label>
+			<input type="password" class="form-control" name="aws_secretkey" id="aws_secretkey" placeholder="Enter Secret key" >
+													</div>
+													<br>
+													<div class="form-group"><label>KeyPair</label><input type="text" class="form-control" name="aws_keypair" id="aws_keypair" placeholder="Enter KeyPair" >
+													</div>
+													
+													<br>			  
+													<br>
+												  <div class="modal-footer">
+			<button type="button" class="btn btn-primary" name="cloud_back2" id="cloud_back2" >Back</button><button type="button" class="btn btn-primary" name="loginbutton_aws" id="loginbutton_aws" onclick="submit_details();">Login</button> <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button> 
+													</div>
+																				</div>
+											<div id="openstack_frm">
+							<br>
+			<h3 style="margin-left: 27%"><img class="non_openstack_logo" src="images/openstack_large_logo.png"  width="80" height="80"/><span style=" width: 200px; " class="label label-info">Login for OpenStack</span> </h3>
+													<br>
+													<br>
+								<div class="form-group"><label>Username</label><input type="text" class="form-control" id="openstack_username" name="openstack_username" placeholder="Enter Username" style="margin-top: -6%;">
+													</div>
+													<br>
+													<div class="form-group">
+														<label>Password</label>
+			<input type="password" class="form-control" id="openstack_password" name="openstack_password" placeholder="Enter Password" style="margin-top: -5%;" >
+													</div>		
+<div style=" position: absolute; margin-top: -29%; margin-left: 356; float: right; ">
+					  <h5 id="loader_heading_os" style="position: relative; margin-left: 35;margin-top: 44%;"></h5>
+					  <img id="loader_os" src="./images/loader.gif" style="visibility:hidden;position: absolute; margin-top: 25; margin-left: 52;"/>
+					  <img id="loader1_os" src="./images/loader1.png" style="visibility:hidden;position: absolute; margin-top: 5; margin-left: 75;"/>
+					   <img id="invalid_img_os" src="./images/logos/invalid.jpg" style="visibility:hidden;position: absolute;
+			margin-top: 11px; margin-left: 75px;"/>
+
+
+			 </div>													
+													<br>			  
+													<br>
+												  <div class="modal-footer">
+				<button type="button" class="btn btn-primary" name="cloud_back" id="cloud_back" >Back</button><button type="button" class="btn btn-primary" name="loginbutton_openstack" id="loginbutton_openstack" onclick="submit_details();">Login</button> <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button> 
+													</div>
+
+
+			<input type="hidden" id="os_form_serviceid" name="os_form_serviceid" value="">
+			<input type="hidden" id="os_form_productid" name="os_form_productid" value="">
+			<input type="hidden" id="os_form_productname" name="os_form_productname" value="">
+			<input type="hidden" id='os_form_os' name="os_form_os" value="">
+			<input type="hidden" id="os_form_service_tag" name="os_form_service_tag" value="">
+			<input type="hidden" id="os_form_version" name="os_form_version" value="">
+			<input type="hidden" id="os_form_architecture" name="os_form_architecture" value="">
+			</form>
+			<!-- <button style=" margin-left: -24%; margin-top: 13%; width: 15%; height: 16%; " name="vmboot_next" id="vmboot_next" type="button" class="btn btn-primary" onclick="next_vmboot();" >Next</button><button style=" margin-left: 5%; margin-top: 13%; width: 15%; "type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button> -->
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			<!--********************************************************************** -->
+			<!--********************************************************************** -->
+
+					<script type="text/javascript" src="script/common.js"></script>       
+			</body>
+			</html>

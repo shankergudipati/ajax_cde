@@ -1,0 +1,1 @@
+openstack and available machine installation integrated 

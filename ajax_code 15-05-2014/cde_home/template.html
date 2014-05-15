@@ -1,0 +1,508 @@
+<head>		
+	<style>
+	#software_filter{
+		background: white url(images/search.png) right no-repeat;
+		padding-right: 17px;
+	}
+	</style>
+	<script>
+		$(document).ready(function(){
+			localStorage.clear();
+			$("#bin_img").on('click',function(){
+				if($("#template_div").children().length == 0){
+					$('#alertModal .modal-body').html("No VM to delete...!");
+					$("#alertModal").modal({ 
+						"backdrop" : "static",
+						"keyboard" : true,
+						"show" : true
+					});
+				}
+				else
+				{
+					var deleteFlag = getTemplateDivDelete('delete_false');
+					if(deleteFlag == true){
+						$('#confirmVmSwDelete .modal-body').html("<p>Are you sure you want to delete the selected items ?</p>");
+						$("#confirmVmSwDelete").modal();
+						$('#confirmVmSwDelete').find('.modal-footer #confirm_vm_sw_delete').on('click', function(e){																	
+							getTemplateDivDelete('delete_true');
+							$("#confirmVmSwDelete").modal('hide');
+						});	
+					}
+					else{
+						$('#alertModal .modal-body').html("Please select atleast one VM");
+						$("#alertModal").modal({ 
+							"backdrop" : "static",
+							"keyboard" : true,
+							"show" : true
+						});						
+					}
+				}					
+			});		
+			var maxSlides,	width = $(window).width();
+			
+			if (width >= 1440) {
+				noOfSlides = 3;
+				noOfVmSlides = 3;
+				customSlideWidth = 330;
+				customVmSlideWidth = 167;
+			} else if (width <= 1280 && width > 1024) {
+				noOfSlides = 2;
+				noOfVmSlides = 2;
+				customSlideWidth = 220;
+				customVmSlideWidth = 167;
+			} else if (width <= 1024) {
+				noOfSlides = 1;
+				customSlideWidth = 110;
+				noOfVmSlides = 1;
+				customVmSlideWidth = 110;
+			}
+			
+			var swSlider = $('.bxslider').bxSlider({				
+				captions: true,
+				auto: false,
+				autoControls: false,
+				slideWidth: customSlideWidth,
+				minSlides: noOfSlides,
+				maxSlides: noOfSlides,
+				moveSlides: noOfSlides,
+				hideControlOnEnd: true,
+				slideMargin: 1
+			});				
+			$('.bxslidervm').bxSlider({
+				captions: true,
+				auto: false,
+				autoControls: false,
+				slideWidth: customVmSlideWidth,
+				minSlides: noOfVmSlides,
+				maxSlides: noOfVmSlides,
+				moveSlides: noOfVmSlides,
+				hideControlOnEnd: true,
+				slideMargin: 1				
+			});	
+			$("#software_filter").keyup(function () {
+				$(".software_div .bx-wrapper .bx-viewport #no_sw").remove();			
+				var filter = $(this).val(), count = 0;				
+				$(".software_div:first li").each(function () {
+					if ($(this).children().children()[0].title.search(new RegExp(filter, "i")) < 0) {
+						$(this).addClass("hidden");	
+					} else {
+						$(this).removeClass("hidden");	
+						count++;
+					}
+				});							
+				swSlider.reloadSlider();				
+				if(count == 0){					
+					$(".software_div a.bx-next").addClass("disabled");
+					$(".software_div a.bx-prev").addClass("disabled");
+					$(".software_div .bx-wrapper .bx-viewport").append("<h4 style='color:#2679B5;text-align:center;' id='no_sw'>No Software found</h4>");
+					$(".software_div .bx-pager").css('visibility','hidden');										
+				}								
+			});	
+			$("#clear_software_filter").on('click',function(e){
+				$("#software_filter").val("");
+				$(".software_div:first li").each(function () {													
+					$(this).removeClass("hidden");							
+				});				
+				$(".software_div .bx-wrapper .bx-viewport #no_sw").remove();
+				swSlider.reloadSlider();				
+			});								
+		});
+	</script>
+</head>
+<div id="softwareTemplate">
+		<input type="hidden" name="increment_val" id="increment_val" value=""/>		
+		<!-- Dupicate software alert div -->
+		<div id="alertModal" class="modal fade" style="height:300px;">
+			<div class="modal-dialog">
+			<div class="modal-content">									
+			<div class="modal-body"></div>									
+			<div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">OK</button></div>
+			</div>
+			</div>
+		</div>
+		<!-- End Dupicate software alert div -->
+		<!--  Confirm delete VM/SW Modal Dialog -->
+		<div class="modal fade" id="confirmVmSwDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Delete</h4>
+			  </div>
+			  <div class="modal-body">										
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-danger" id="confirm_vm_sw_delete">Delete</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		<!-- End confirm delete VM/SW Modal Dialog -->
+		<!-- Machines div -->
+		<div style="float:left;margin:0px 0px 30px 40px;" id="machineDiv">
+			<h4 style="text-align:center;">Machines</h4>										
+			 <ul class="bxslidervm" style="width: 415%; position: relative; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
+				<li>
+				<div id="vm1" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#C5F5D6;">				
+					VM1
+				</div>
+				</li>
+				<li>
+				<div id="vm2" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#F0D9BC;">
+					VM2
+				</div>
+				</li>
+				<li>
+				<div id="vm3" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#D8EEF2;">
+					VM3
+				</div>
+				</li>
+				<li>
+				<div id="vm4" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#F0E4F0;">
+					VM4
+				</div>
+				</li>
+				<li>
+				<div id="vm5" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#F6F4C2;">
+					VM5
+				</div>
+				</li>
+				<li>
+				<div id="vm6" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#C5F5D6;">
+					VM6
+				</div>
+				</li>
+				<li>
+				<div id="vm7" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#F0D9BC;">
+					VM7
+				</div>
+				</li>
+				<li>
+				<div id="vm8" class="vm" draggable="true" ondragstart="dragStart(event)" style="background-color:#D8EEF2;">
+					VM8
+				</div>
+				</li>									
+			</ul>									
+		</div>
+		<!-- End Machines div -->
+		
+		<!-- Sotwares div -->								
+		<div style="float:left; width:650px;" class="software_div">
+			<h4 style="text-align:center;">Softwares</h4>
+				<div style="float:clear;">																						
+					<input type="text" name="software_filter" id="software_filter" Placeholder="Enter search text here" style="display:inline-block;"/>
+					<img id="clear_software_filter" name="clear_software_filter" src="images/button_cancel.png" style="display:inline-block;"/>
+				</div>									
+				<ul class="sw_list sw_list_cs bxslider" style="width: 415%; position: relative; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">
+						<li>
+							<figure>
+								<div class="swimg" title="jboss" id="jboss_div" draggable="true" ondragstart="dragStart(event)">	
+									<div class="swimg_div">
+										<img id="jboss" src="images/logo-jboss.gif" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />	
+									</div>
+								</div>
+								<figcaption>											
+									<h4>Details</h4>
+									Name: Jboss</br>
+									Version: 5.3.2
+								</figcaption>		
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="mysql" id="mysql_div4" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+									<img id="mysql4" src="images/logo-mysql.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Mysql<br>
+								 Version: 5.3.2
+							</figcaption>
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="ruby" id="ruby_div5" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+								<img id="ruby5" src="images/logo-ruby.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Ruby<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>											
+						<li>
+							<figure>
+							<div class="swimg" title="postgsql" id="postgsql_div" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+								<img id="postgsql" src="images/logo-postgres.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Postgsql<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>											
+						<li>
+							<figure>
+							<div class="swimg" title="node" id="node_div" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="node" src="images/logo-node.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Node<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>	
+						<li>
+							<figure>
+							<div class="swimg" title="mongo" id="mongo_div" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="mongo" src="images/logo-mongo.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Mongo<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="rabbit" id="rabbit_div" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="rabbit" src="images/logo-rabbit.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Rabbit<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>
+						<li>
+							<figure>
+								<div class="swimg" title="jboss" id="jboss_div1" draggable="true" ondragstart="dragStart(event)">	
+									<div class="swimg_div">
+										<img id="jboss1" src="images/logo-jboss.gif" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />	
+									</div>
+								</div>
+								<figcaption>											
+									<h4>Details</h4>
+									Name: Jboss</br>
+									Version: 5.3.2
+								</figcaption>		
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="mysql" id="mysql_div2" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+									<img id="mysql2" src="images/logo-mysql.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Mysql<br>
+								 Version: 5.3.2
+							</figcaption>
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="ruby" id="ruby_div2" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+								<img id="ruby2" src="images/logo-ruby.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Ruby<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>											
+						<li>
+							<figure>
+							<div class="swimg" title="postgsql" id="postgsql_div2" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+								<img id="postgsql2" src="images/logo-postgres.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Postgsql<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>											
+						<li>
+							<figure>
+							<div class="swimg" title="node" id="node_div2" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="node2" src="images/logo-node.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Node<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>	
+						<li>
+							<figure>
+							<div class="swimg" title="mongo" id="mongo_div2" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="mongo2" src="images/logo-mongo.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Mongo<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="rabbit" id="rabbit_div2" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="rabbit2" src="images/logo-rabbit.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Rabbit<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>
+						<li>
+							<figure>
+								<div class="swimg" title="jboss" id="jboss_div2" draggable="true" ondragstart="dragStart(event)">	
+									<div class="swimg_div">
+										<img id="jboss2" src="images/logo-jboss.gif" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />	
+									</div>
+								</div>
+								<figcaption>											
+									<h4>Details</h4>
+									Name: Jboss</br>
+									Version: 5.3.2
+								</figcaption>		
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="mysql" id="mysql_div3" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+									<img id="mysql3" src="images/logo-mysql.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Mysql<br>
+								 Version: 5.3.2
+							</figcaption>
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="ruby" id="ruby_div3" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+								<img id="ruby3" src="images/logo-ruby.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Ruby<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>											
+						<li>
+							<figure>
+							<div class="swimg" title="postgsql" id="postgsql_div3" draggable="true" ondragstart="dragStart(event)">
+								<div class="swimg_div">
+								<img id="postgsql3" src="images/logo-postgres.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Postgsql<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>											
+						<li>
+							<figure>
+							<div class="swimg" title="node" id="node_div3" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="node3" src="images/logo-node.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Node<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>	
+						<li>
+							<figure>
+							<div class="swimg" title="mongo" id="mongo_div3" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="mongo3" src="images/logo-mongo.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Mongo<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>
+						<li>
+							<figure>
+							<div class="swimg" title="rabbit" id="rabbit_div4" draggable="true" ondragstart="dragStart(event)">	
+								<div class="swimg_div">
+								<img id="rabbit4" src="images/logo-rabbit.png" width="100" height="90" class="software" draggable="true" ondragstart="dragStart(event)" />
+								</div>
+							</div>										
+							<figcaption>											
+								<h4>Details</h4>
+								 Name: Rabbit<br>
+								 Version: 5.3.2
+							</figcaption>	
+							</figure>										
+						</li>
+					</ul>
+		<!-- End Sotwares div -->
+		</div>
+		<!-- Template div -->
+		<div class="template_outer_div">
+			<h4 style="text-align:center;">Template</h4>						
+			<div id="template_div" ondrop="dropOver(event)" ondragover="allowDrop(event)">
+			</div>
+			<button id="template_save" class="btn">Save Template</button>
+			<!-- Bin div -->		
+				<span style="float:right;margin-top:5px;width:50px;height:50px;" id="bin_div" ondrop="dropOver(event)" ondragover="allowDrop(event)">
+				<img id="bin_img" title="Delete" src="images/bin.jpg" width="70" height="70"/>
+				</span>
+			<!-- End Bin div -->
+		</div>
+		<!-- End Template div -->		
+</div>
